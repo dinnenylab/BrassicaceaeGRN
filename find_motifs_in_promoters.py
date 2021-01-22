@@ -1,21 +1,31 @@
 #!/usr/bin/env python
-synopsis = "\n### usage: find_elements_in_promoters.py <cis-elements.list> <promoters.fasta> <output.txt>\n\
-### find locations of elements in <cis-elements.list>, within each sequence in <promoters.fasta>, and print to <output.txt>\n\
-### <cis-elements.list> contains an element ID and an element sequence, delimited by a tab, per each line \n\
-### element sequences can be either sequences or python regular expression patterns \n\
-### <promoters.fasta> should be formatted as one-line sequences (e.g. using ""fasta-formatter"") \n\
-### <output.txt> contains the promoter ID, start and end positions, the matched sequence, the element ID, and the element pattern, ... \n\
-### ... tab-delimited and one occurrence per line \n\
-### searches only for the top strand. add inverted sequences to the <cis-elements.list> for all elements \n\
-### for overlapping matches of the same element, only the first occurrence will be reported. all non-overlapping matches will be reported \n\
-### 201114, script renamed to 'find_motifs_in_promoters.py';\n\
-### copyleft by ohdongha@gmail.com 150927 ver 2.1, now can accept non-capital sequences;\n\
-### copyleft by ohdongha@gmail.com 150927 ver 2.1, now print start and end positions;\n\
-### copyleft by ohdongha@gmail.com 150503 ver 2.0, adding capability to deal with regular expression;\n\
-### copyleft by ohdongha@gmail.com 150328 ver 1.0\n"
+import sys, re
 
-import sys
-import re
+synopsis = "\n\
+find_motifs_in_promoters.py <cis-elements.list> <promoters.fa> <output.txt>\n\
+ - find locations of elements in <cis-elements.list>, within each sequence in\n\
+   <promoters.fa>, and print to tab-delimited <output.txt>;\n\
+ - <cis-elements.list> contains an element ID and an element pattern, tab-\n\
+   delimited, one element per line; an element pattern can be either a sequence\n\
+   or a python regular expression pattern;\n\
+ - <promoters.fa> should be formatted as one-liner sequences (e.g. using\n\
+   'fasta-formatter'); in a sequence header (ID), only the first field before\n\
+   the first space or tab is used as the promoter ID;\n\
+ - <output.txt> contains the promoter ID, followed by start and end positions,\n\
+   the matched sequence, the element ID, and the element pattern, tab-delimited\n\
+   and one match per line \n\
+ - searches only the top strand of <promoter.fa>, hence add inverted sequences\n\
+   to <cis-elements.list> for all elements;\n\
+ - for overlapping matches of the same element, only the first occurrence are\n\
+   reported, while all non-overlapping matches are reported;\n\
+by ohdongha@gmail.com ver2.2.1 20210121\n"
+#version_history
+#210121 ver 2.2.1 # minimally modified to work with python 3
+#201226 ver 2.2 # use only the first field of sequence IDs in <promoter.fasta>
+#150927 ver 2.1 # now can accept non-capital sequences
+#150927 ver 2.1 # now print start and end positions
+#150503 ver 2.0 # adding capability to deal with regular expression
+#150328 ver 1.0
 
 ### helper function
 def find_all_pattern(a_str, sub):
@@ -31,16 +41,12 @@ def find_all_pattern(a_str, sub):
 
 ### reading in arguments
 try: 
-	fin_list = open(sys.argv[1], "rU")
-	fin_fasta = open(sys.argv[2], "rU")
+	fin_list = open(sys.argv[1], "r")
+	fin_fasta = open(sys.argv[2], "r")
 	fout = open(sys.argv[3], "w")
-except ValueError :
-	print synopsis
+except:
+	print( synopsis )
 	sys.exit(0)
-except IndexError :
-	print synopsis
-	sys.exit(0)
-
 
 ### reading in <cis-elements.list>
 lines_in_elementsList = 0
@@ -48,7 +54,7 @@ faultyLines_in_elementsList = 0
 elementID = ''
 element_dict = dict()
 
-print "\nReading ", sys.argv[1].strip(), ": \n"
+print( "\nReading ", sys.argv[1].strip(), ": \n" )
 for line in fin_list:
 	tok = line.split('\t')
 	lines_in_elementsList = lines_in_elementsList + 1
@@ -63,7 +69,7 @@ for line in fin_list:
 	except ValueError :
 		faultyLines_in_elementsList = faultyLines_in_elementsList +1
 
-print "Out of total ", lines_in_elementsList, " lines in ", sys.argv[1].strip(), ", ", faultyLines_in_elementsList, " lines were rejected."
+print( "Out of total ", lines_in_elementsList, " lines in ", sys.argv[1].strip(), ", ", faultyLines_in_elementsList, " lines were rejected." )
 fin_list.close()
 
 
@@ -74,10 +80,11 @@ newSeq = 0
 ElementsFound = []
 counter = 0
 
-print "\nReading ", sys.argv[2].strip(), ": \n"
+print( "\nReading ", sys.argv[2].strip(), ": \n" )
 for line in fin_fasta:
 	if (line[0] == '>'):
-		promoterID = line[1:].strip()
+#		promoterID = line[1:].strip()
+		promoterID = line[1:].strip().split()[0] # use only the first field
 		newSeq = 1
 	elif ( newSeq == 1):
 		promoterSeq = line.strip().upper()
@@ -97,6 +104,6 @@ for line in fin_fasta:
 			sys.stdout.write("\r   processing ~%d promoters" % int(counter))
 			sys.stdout.flush()
 	
-print "\ndone"
+print( "\ndone" )
 fin_fasta.close()
 fout.close()
