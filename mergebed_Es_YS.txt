@@ -1,0 +1,293 @@
+# Es data only
+# 03.30.2020- goal is to combine files together (DAP-Seq)
+# by Ying Sun
+Bedtools: Keep if it occurs in 2 or more files-- save peaks
+Venn diagram to check: checked and the more files, the more peaks you can find
+
+# Es-Shoot_ABF1
+
+module load bedtools/2.26.0
+
+# This will chop each peak to 8bp
+# Then also sorting
+for f in *.narrowPeak; do
+awk -v OFS='\t' '{$2=$2+97} {$3=$3-97} {print $0}' $f | awk -v OFS="\t" '{ if ($2<0) {$2=0}} {print $0}' | sort -k1,1 -k2,2n > ${f}_7bp
+done
+for f in *.narrowPeak_7bp; do
+wc -l "$f"
+done
+
+######################## 
+902 sorted_EsJ-EsABF150y-Esshoot50PCWGY-Q-04-00-2017-XXCACTTT_S1_out_GEM_events.narrowPeak_7bp
+4969 sorted_EsJ-EsABF1a-Esshoot-QR1-10-24-2016-GCCAAT_S1_out_GEM_events.narrowPeak_7bp
+7924 sorted_EsJ-EsJABF1c-EsJshoot-Q-11-30-2018-CATCGA_S1_out_GEM_events.narrowPeak_7bp
+8096 sorted_EsJ-EsJABF1d-EsJshoot-Q-11-30-2018-GTTGCA_S1_out_GEM_events.narrowPeak_7bp
+9738 sorted_EsJ-EsJABF1e-EsJshoot-Q-11-30-2018-AGACTC_S1_out_GEM_events.narrowPeak_7bp
+########################
+cat *.narrowPeak_7bp | sort -k1,1 -k2,2n > ${PWD##*/}.bed 
+bedtools merge -c 1 -o count -i ${PWD##*/}.bed > ${PWD##*/}.merged.bed
+awk -v OFS="\t" -v t=$t '$4>=2 {print $0}' ${PWD##*/}.merged.bed > ${PWD##*/}.mergedfiltered.bed
+                                                                   
+for f in *.bed; do
+wc -l "$f"
+done
+
+# All peaks, merged peaks, final peaks 
+########################
+31629 Es_Shoot_EsABF1.bed
+13854 Es_Shoot_EsABF1.merged.bed
+8123 Es_Shoot_EsABF1.mergedfiltered.bed
+######################## 
+
+# Es-Shoot_ABF2
+
+module load bedtools/2.26.0
+
+# This will chop each peak to 8bp
+# Then also sorting
+for f in *.narrowPeak; do
+awk -v OFS='\t' '{$2=$2+97} {$3=$3-97} {print $0}' $f | awk -v OFS="\t" '{ if ($2<0) {$2=0}} {print $0}' | sort -k1,1 -k2,2n > ${f}_7bp
+done
+for f in *.narrowPeak_7bp; do
+wc -l "$f"
+done
+########################
+818 sorted_EsJ-EsABF250y-Esshoot50PCWGY-Q-04-00-2017-XXCACCGG_S1_out_GEM_events.narrowPeak_7bp
+736 sorted_EsJ-EsABF250z-Esshoot50PCWGA-Q-04-00-2017-XXGGAACT_S1_out_GEM_events.narrowPeak_7bp
+4506 sorted_EsJ-EsABF2a-Esshoot-QR1-10-24-2016-CAGATC_S1_out_GEM_events.narrowPeak_7bp
+12535 sorted_EsJ-EsABF2b-Esshoot-QR2-1-27-2017-CAACGT_S1_out_GEM_events.narrowPeak_7bp
+10657 sorted_EsJ-EsJABF2c-EsJshoot-Q-11-30-2018-TAGACC_S1_out_GEM_events.narrowPeak_7bp
+10053 sorted_EsJ-EsJABF2d-EsJshoot-Q-11-30-2018-CAAGCT_S1_out_GEM_events.narrowPeak_7bp
+11535 sorted_EsJ-EsJABF2e-EsJshoot-Q-11-30-2018-TGTGAC_S1_out_GEM_events.narrowPeak_7bp
+######################## 
+
+cat *.narrowPeak_7bp | sort -k1,1 -k2,2n > ${PWD##*/}.bed 
+bedtools merge -c 1 -o count -i ${PWD##*/}.bed > ${PWD##*/}.merged.bed
+awk -v OFS="\t" -v t=$t '$4>=2 {print $0}' ${PWD##*/}.merged.bed > ${PWD##*/}.mergedfiltered.bed
+                                                                   
+for f in *.bed; do
+wc -l "$f"
+done
+
+# All peaks, merged peaks, final peaks 
+########################
+50840 Es_Shoot_EsABF2.bed
+21880 Es_Shoot_EsABF2.merged.bed
+11447 Es_Shoot_EsABF2.mergedfiltered.bed                                           
+######################## 
+
+# Es-Shoot_ABF3
+
+module load bedtools/2.26.0
+
+# This will chop each peak to 8bp
+# Then also sorting
+for f in *.narrowPeak; do
+awk -v OFS='\t' '{$2=$2+97} {$3=$3-97} {print $0}' $f | awk -v OFS="\t" '{ if ($2<0) {$2=0}} {print $0}' | sort -k1,1 -k2,2n > ${f}_7bp
+done
+for f in *.narrowPeak_7bp; do
+wc -l "$f"
+done
+########################
+8175 sorted_EsJ-EsABF3a-Esshoot-QR1-10-24-2016-ACTTGA_S1_out_GEM_events.narrowPeak_7bp
+10803 sorted_EsJ-EsABF3b-Esshoot-QR2-1-27-2017-TTCAGG_S1_out_GEM_events.narrowPeak_7bp
+12095 sorted_EsJ-EsJABF3c-EsJshoot-Q-11-30-2018-GATCCA_S1_out_GEM_events.narrowPeak_7bp
+12779 sorted_EsJ-EsJABF3d-EsJshoot-Q-11-30-2018-TGACAC_S1_out_GEM_events.narrowPeak_7bp
+13556 sorted_EsJ-EsJABF3e-EsJshoot-Q-11-30-2018-GTACCA_S1_out_GEM_events.narrowPeak_7bp
+######################## 
+
+cat *.narrowPeak_7bp | sort -k1,1 -k2,2n > ${PWD##*/}.bed 
+bedtools merge -c 1 -o count -i ${PWD##*/}.bed > ${PWD##*/}.merged.bed
+awk -v OFS="\t" -v t=$t '$4>=2 {print $0}' ${PWD##*/}.merged.bed > ${PWD##*/}.mergedfiltered.bed
+                                                                   
+for f in *.bed; do
+wc -l "$f"
+done
+
+# All peaks, merged peaks, final peaks 
+########################
+57408 Es_Shoot_EsABF3.bed
+21912 Es_Shoot_EsABF3.merged.bed
+12747 Es_Shoot_EsABF3.mergedfiltered.bed                                             
+######################## 
+
+# Es-Shoot_ABF4
+
+module load bedtools/2.26.0
+
+# This will chop each peak to 8bp
+# Then also sorting
+for f in *.narrowPeak; do
+awk -v OFS='\t' '{$2=$2+97} {$3=$3-97} {print $0}' $f | awk -v OFS="\t" '{ if ($2<0) {$2=0}} {print $0}' | sort -k1,1 -k2,2n > ${f}_7bp
+done
+for f in *.narrowPeak_7bp; do
+wc -l "$f"
+done
+########################
+869 sorted_EsJ-EsABF450y-Esshoot50PCWGY-Q-04-00-2017-XXGCATGC_S1_out_GEM_events.narrowPeak_7bp
+884 sorted_EsJ-EsABF450z-Esshoot50PCWGA-Q-04-00-2017-XXGGACGG_S1_out_GEM_events.narrowPeak_7bp
+6271 sorted_EsJ-EsABF4a-Esshoot-QR1-10-24-2016-GATCAG_S1_out_GEM_events.narrowPeak_7bp
+7934 sorted_EsJ-EsABF4b-Esshoot-QR2-1-27-2017-GTTGCA_S1_out_GEM_events.narrowPeak_7bp
+18547 sorted_EsJ-EsJABF4c-EsJshoot-Q-11-30-2018-CTAGCA_S1_out_GEM_events.narrowPeak_7bp
+20343 sorted_EsJ-EsJABF4d-EsJshoot-Q-11-30-2018-GTTCGA_S1_out_GEM_events.narrowPeak_7bp
+20699 sorted_EsJ-EsJABF4e-EsJshoot-Q-11-30-2018-ATCAGC_S1_out_GEM_events.narrowPeak_7bp
+######################## 
+
+cat *.narrowPeak_7bp | sort -k1,1 -k2,2n > ${PWD##*/}.bed 
+bedtools merge -c 1 -o count -i ${PWD##*/}.bed > ${PWD##*/}.merged.bed
+awk -v OFS="\t" -v t=$t '$4>=2 {print $0}' ${PWD##*/}.merged.bed > ${PWD##*/}.mergedfiltered.bed
+                                                                   
+for f in *.bed; do
+wc -l "$f"
+done
+
+# All peaks, merged peaks, final peaks 
+########################
+75547 Es_Shoot_EsABF4.bed
+33326 Es_Shoot_EsABF4.merged.bed
+17790 Es_Shoot_EsABF4.mergedfiltered.bed                                       
+######################## 
+
+
+
+################ short files ####################
+#### ABF1 ########################
+module load bedtools/2.26.0
+
+# This will chop each peak to 8bp
+# Then also sorting
+for f in *.narrowPeak; do
+awk -v OFS='\t' '{$2=$2+97} {$3=$3-97} {print $0}' $f | awk -v OFS="\t" '{ if ($2<0) {$2=0}} {print $0}' | sort -k1,1 -k2,2n > ${f}_7bp
+done
+for f in *.narrowPeak_7bp; do
+wc -l "$f"
+done
+
+######################## 
+7924 sorted_EsJ-EsJABF1c-EsJshoot-Q-11-30-2018-CATCGA_S1_out_GEM_events.narrowPeak_7bp
+8096 sorted_EsJ-EsJABF1d-EsJshoot-Q-11-30-2018-GTTGCA_S1_out_GEM_events.narrowPeak_7bp
+9738 sorted_EsJ-EsJABF1e-EsJshoot-Q-11-30-2018-AGACTC_S1_out_GEM_events.narrowPeak_7bp
+########################
+cat *.narrowPeak_7bp | sort -k1,1 -k2,2n > ${PWD##*/}.bed 
+bedtools merge -c 1 -o count -i ${PWD##*/}.bed > ${PWD##*/}.merged.bed
+awk -v OFS="\t" -v t=$t '$4>=2 {print $0}' ${PWD##*/}.merged.bed > ${PWD##*/}.mergedfiltered.bed
+                                                                   
+for f in *.bed; do
+wc -l "$f"
+done
+
+# All peaks, merged peaks, final peaks 
+########################
+25758 short.bed
+12514 short.merged.bed
+7630 short.mergedfiltered.bed
+######################## 
+#### ABF2 ########################
+module load bedtools/2.26.0
+
+# This will chop each peak to 8bp
+# Then also sorting
+for f in *.narrowPeak; do
+awk -v OFS='\t' '{$2=$2+97} {$3=$3-97} {print $0}' $f | awk -v OFS="\t" '{ if ($2<0) {$2=0}} {print $0}' | sort -k1,1 -k2,2n > ${f}_7bp
+done
+for f in *.narrowPeak_7bp; do
+wc -l "$f"
+done
+########################
+10657 sorted_EsJ-EsJABF2c-EsJshoot-Q-11-30-2018-TAGACC_S1_out_GEM_events.narrowPeak_7bp
+10053 sorted_EsJ-EsJABF2d-EsJshoot-Q-11-30-2018-CAAGCT_S1_out_GEM_events.narrowPeak_7bp
+11535 sorted_EsJ-EsJABF2e-EsJshoot-Q-11-30-2018-TGTGAC_S1_out_GEM_events.narrowPeak_7bp
+######################## 
+
+cat *.narrowPeak_7bp | sort -k1,1 -k2,2n > ${PWD##*/}.bed 
+bedtools merge -c 1 -o count -i ${PWD##*/}.bed > ${PWD##*/}.merged.bed
+awk -v OFS="\t" -v t=$t '$4>=2 {print $0}' ${PWD##*/}.merged.bed > ${PWD##*/}.mergedfiltered.bed
+                                                                   
+for f in *.bed; do
+wc -l "$f"
+done
+
+# All peaks, merged peaks, final peaks 
+########################
+32245 short.bed
+17674 short.merged.bed
+9056 short.mergedfiltered.bed                                         
+######################## #### ABF3 ########################
+module load bedtools/2.26.0
+
+# This will chop each peak to 8bp
+# Then also sorting
+for f in *.narrowPeak; do
+awk -v OFS='\t' '{$2=$2+97} {$3=$3-97} {print $0}' $f | awk -v OFS="\t" '{ if ($2<0) {$2=0}} {print $0}' | sort -k1,1 -k2,2n > ${f}_7bp
+done
+for f in *.narrowPeak_7bp; do
+wc -l "$f"
+done
+########################
+12095 sorted_EsJ-EsJABF3c-EsJshoot-Q-11-30-2018-GATCCA_S1_out_GEM_events.narrowPeak_7bp
+12779 sorted_EsJ-EsJABF3d-EsJshoot-Q-11-30-2018-TGACAC_S1_out_GEM_events.narrowPeak_7bp
+13556 sorted_EsJ-EsJABF3e-EsJshoot-Q-11-30-2018-GTACCA_S1_out_GEM_events.narrowPeak_7bp
+######################## 
+
+cat *.narrowPeak_7bp | sort -k1,1 -k2,2n > ${PWD##*/}.bed 
+bedtools merge -c 1 -o count -i ${PWD##*/}.bed > ${PWD##*/}.merged.bed
+awk -v OFS="\t" -v t=$t '$4>=2 {print $0}' ${PWD##*/}.merged.bed > ${PWD##*/}.mergedfiltered.bed
+                                                                   
+for f in *.bed; do
+wc -l "$f"
+done
+
+# All peaks, merged peaks, final peaks 
+########################
+38430 short.bed
+19428 short.merged.bed
+11011 short.mergedfiltered.bed                                          
+######################## 
+#### ABF4 ########################
+module load bedtools/2.26.0
+
+# This will chop each peak to 8bp
+# Then also sorting
+for f in *.narrowPeak; do
+awk -v OFS='\t' '{$2=$2+97} {$3=$3-97} {print $0}' $f | awk -v OFS="\t" '{ if ($2<0) {$2=0}} {print $0}' | sort -k1,1 -k2,2n > ${f}_7bp
+done
+for f in *.narrowPeak_7bp; do
+wc -l "$f"
+done
+########################
+18547 sorted_EsJ-EsJABF4c-EsJshoot-Q-11-30-2018-CTAGCA_S1_out_GEM_events.narrowPeak_7bp
+20343 sorted_EsJ-EsJABF4d-EsJshoot-Q-11-30-2018-GTTCGA_S1_out_GEM_events.narrowPeak_7bp
+20699 sorted_EsJ-EsJABF4e-EsJshoot-Q-11-30-2018-ATCAGC_S1_out_GEM_events.narrowPeak_7bp
+######################## 
+
+cat *.narrowPeak_7bp | sort -k1,1 -k2,2n > ${PWD##*/}.bed 
+bedtools merge -c 1 -o count -i ${PWD##*/}.bed > ${PWD##*/}.merged.bed
+awk -v OFS="\t" -v t=$t '$4>=2 {print $0}' ${PWD##*/}.merged.bed > ${PWD##*/}.mergedfiltered.bed
+                                                                   
+for f in *.bed; do
+wc -l "$f"
+done
+
+# All peaks, merged peaks, final peaks 
+########################
+59589 short.bed
+31493 short.merged.bed
+16669 short.mergedfiltered.bed                                    
+######################## 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
