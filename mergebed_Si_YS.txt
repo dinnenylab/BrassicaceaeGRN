@@ -1,0 +1,138 @@
+# Sp data only
+# 03.30.2020- goal is to combine files together (DAP-Seq)
+# by Ying Sun
+Bedtools: Keep if it occurs in 2 or more files-- save peaks
+Venn diagram to check: checked and the more files, the more peaks you can find
+
+# Si-Shoot_ABF1
+
+module load bedtools/2.26.0
+
+# This will chop each peak to 8bp
+# Then also sorting
+for f in *.narrowPeak; do
+awk -v OFS='\t' '{$2=$2+97} {$3=$3-97} {print $0}' $f | awk -v OFS="\t" '{ if ($2<0) {$2=0}} {print $0}' | sort -k1,1 -k2,2n > ${f}_7bp
+done
+for f in *.narrowPeak_7bp; do
+wc -l "$f"
+done
+########################
+2502 sorted_Si-SiABF1a-Sishoot-Q-11-30-2018-GCCAAT_S1_out_GEM_events.narrowPeak
+2021 sorted_Si-SiABF1b-Sishoot-Q-11-30-2018-TCAGAC_S1_out_GEM_events.narrowPeak
+1899 sorted_Si-SiABF1c-Sishoot-Q-11-30-2018-TTGAGC_S1_out_GEM_events.narrowPeak
+######################## 
+
+cat *.narrowPeak_7bp | sort -k1,1 -k2,2n > ${PWD##*/}.bed 
+bedtools merge -c 1 -o count -i ${PWD##*/}.bed > ${PWD##*/}.merged.bed
+awk -v OFS="\t" -v t=$t '$4>=2 {print $0}' ${PWD##*/}.merged.bed > ${PWD##*/}.mergedfiltered.bed
+                                                                   
+for f in *.bed; do
+wc -l "$f"
+done
+
+# All peaks, merged peaks, final peaks 
+########################
+6422 Si_Shoot_SiABF1.bed
+3890 Si_Shoot_SiABF1.merged.bed
+1602 Si_Shoot_SiABF1.mergedfiltered.bed                                          
+######################## 
+
+# Si-Shoot_ABF2
+
+module load bedtools/2.26.0
+
+# This will chop each peak to 8bp
+# Then also sorting
+for f in *.narrowPeak; do
+awk -v OFS='\t' '{$2=$2+97} {$3=$3-97} {print $0}' $f | awk -v OFS="\t" '{ if ($2<0) {$2=0}} {print $0}' | sort -k1,1 -k2,2n > ${f}_7bp
+done
+for f in *.narrowPeak_7bp; do
+wc -l "$f"
+done
+########################
+6953 sorted_Si-SiABF2a-Sishoot-Q-11-30-2018-CAGATC_S1_out_GEM_events.narrowPeak
+9227 sorted_Si-SiABF2b-Sishoot-Q-11-30-2018-ATGACC_S1_out_GEM_events.narrowPeak
+11726 sorted_Si-SiABF2c-Sishoot-Q-11-30-2018-CTACGA_S1_out_GEM_events.narrowPeak
+######################## 
+
+cat *.narrowPeak_7bp | sort -k1,1 -k2,2n > ${PWD##*/}.bed 
+bedtools merge -c 1 -o count -i ${PWD##*/}.bed > ${PWD##*/}.merged.bed
+awk -v OFS="\t" -v t=$t '$4>=2 {print $0}' ${PWD##*/}.merged.bed > ${PWD##*/}.mergedfiltered.bed
+                                                                   
+for f in *.bed; do
+wc -l "$f"
+done
+
+# All peaks, merged peaks, final peaks 
+########################
+27906 Si_Shoot_SiABF2.bed
+15088 Si_Shoot_SiABF2.merged.bed
+7971 Si_Shoot_SiABF2.mergedfiltered.bed                                            
+######################## 
+
+# Si-Shoot_ABF3
+
+module load bedtools/2.26.0
+
+# This will chop each peak to 8bp
+# Then also sorting
+for f in *.narrowPeak; do
+awk -v OFS='\t' '{$2=$2+97} {$3=$3-97} {print $0}' $f | awk -v OFS="\t" '{ if ($2<0) {$2=0}} {print $0}' | sort -k1,1 -k2,2n > ${f}_7bp
+done
+for f in *.narrowPeak_7bp; do
+wc -l "$f"
+done
+########################
+5844 sorted_Si-SiABF3a-Sishoot-Q-11-30-2018-ACTTGA_S1_out_GEM_events.narrowPeak_7bp
+9103 sorted_Si-SiABF3b-Sishoot-Q-11-30-2018-GTACGT_S1_out_GEM_events.narrowPeak_7bp
+14573 sorted_Si-SiABF3c-Sishoot-Q-11-30-2018-AGTCTG_S1_out_GEM_events.narrowPeak_7bp
+######################## 
+
+cat *.narrowPeak_7bp | sort -k1,1 -k2,2n > ${PWD##*/}.bed 
+bedtools merge -c 1 -o count -i ${PWD##*/}.bed > ${PWD##*/}.merged.bed
+awk -v OFS="\t" -v t=$t '$4>=2 {print $0}' ${PWD##*/}.merged.bed > ${PWD##*/}.mergedfiltered.bed
+                                                                   
+for f in *.bed; do
+wc -l "$f"
+done
+
+# All peaks, merged peaks, final peaks 
+########################
+29520 Si_Shoot_SiABF3.bed
+17528 Si_Shoot_SiABF3.merged.bed
+8005 Si_Shoot_SiABF3.mergedfiltered.bed                                           
+######################## 
+
+# Si-Shoot_ABF4
+
+module load bedtools/2.26.0
+
+# This will chop each peak to 8bp
+# Then also sorting
+for f in *.narrowPeak; do
+awk -v OFS='\t' '{$2=$2+97} {$3=$3-97} {print $0}' $f | awk -v OFS="\t" '{ if ($2<0) {$2=0}} {print $0}' | sort -k1,1 -k2,2n > ${f}_7bp
+done
+for f in *.narrowPeak_7bp; do
+wc -l "$f"
+done
+########################
+7618 sorted_Si-SiABF4a-Sishoot-Q-11-30-2018-GATCAG_S1_out_GEM_events.narrowPeak
+6817 sorted_Si-SiABF4b-Sishoot-Q-11-30-2018-GATGCT_S1_out_GEM_events.narrowPeak
+11488 sorted_Si-SiABF4c-Sishoot-Q-11-30-2018-GAACCT_S1_out_GEM_events.narrowPeak
+5790 sorted_Si-SiABF4-Sishoot-Q-11-30-2018-ACAGTG_S1_out_GEM_events.narrowPeak
+######################## 
+
+cat *.narrowPeak_7bp | sort -k1,1 -k2,2n > ${PWD##*/}.bed 
+bedtools merge -c 1 -o count -i ${PWD##*/}.bed > ${PWD##*/}.merged.bed
+awk -v OFS="\t" -v t=$t '$4>=2 {print $0}' ${PWD##*/}.merged.bed > ${PWD##*/}.mergedfiltered.bed
+                                                                   
+for f in *.bed; do
+wc -l "$f"
+done
+
+# All peaks, merged peaks, final peaks 
+########################
+31713 Si_Shoot_SiABF4.bed
+15177 Si_Shoot_SiABF4.merged.bed
+7744 Si_Shoot_SiABF4.mergedfiltered.bed
+######################## 
