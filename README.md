@@ -4,7 +4,6 @@
 
 ### Custom Python scripts
 Type each script followed by '-h' for more details (pre-requisite, input, parameters, output, etc).
-Pipelines to achieve each task (e.g. Phylogenetically informed Profiling) to be added.
 
 ### Suppelmentary Datasets
 The following file includes all Supplementary Datasets associated with the first preprint (see preprint for details): 
