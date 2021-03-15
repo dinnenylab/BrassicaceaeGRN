@@ -1,7 +1,7 @@
 # Brassicaceae GRN
 - Comparative genomics (especially RNA-seq and DAP-seq) analyses of ABA responses among Brassicaceae species (crucifers).  
 - Currently, housing scripts and files associated with the first preprint of this project ([Sun et al., 2020](https://doi.org/10.1101/2020.11.18.349449))
-
+---
 ## Custom scripts
 For Python scripts, type the script followed by '-h' for more details on pre-requisite, input, parameters/options, and output.
 For shell scripts, see annotations inside for more details.
@@ -46,7 +46,7 @@ PiP_correlation_matrix_pairwise_orthologs.py -N 6 -1n -s AtSiSpEs_GOid-GeneIDs_n
 #### 3. Statistical test
 - Matrices resulted from the step 2 contain columns of p-values estimated for correlation coefficients. These p-values were corrected for multiple testing (g-test), using `stat_multiple_test_correction.py`. See the script help ('-h') for details. 
 - Variance of correlations across all six species pairs (V) were plotted against the median number of genes annotated with the GO term (m), to detect the presence of outliers (i.e. GO terms with large modifications in gene regulation)
-
+---
 ### Merging and annotating DAP-seq peaks
 #### Merging peak positions co-occuring among replicates and transcription factors 
 - DAP-seq reads were processed with `DAP_Seq2020.sh` to call peaks using GEM, and the resulting `.narrowPeak` files are used for merging peaks in different replicates
