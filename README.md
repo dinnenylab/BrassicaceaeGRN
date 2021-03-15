@@ -38,8 +38,8 @@ response_to_abscisic_acid	THHALV10019152M.V1.0|THHALV10016322M.V1.0|THHALV100289
 
 *Note: not only GO terms, any gene sets (e.g. ortholog pairs with a certain _cis_-regulatory motif in their promoters) can be added.
 
-### 2. Pairwise comparison of gene expression
-- Once the two input files were ready, run `PiP_correlation_matrix_pairwise_orthologs.py` to obtain the matrix of correlations of gene expression LFC between ortholog pairs of all species pairs, for all GO terms and samples.
+### 2. Pairwise comparisons of gene expression
+- Once the two input files are ready, run `PiP_correlation_matrix_pairwise_orthologs.py` to obtain the matrix of correlations of gene expression LFC between ortholog pairs of all species pairs, for all GO terms and samples.
 - For example, the following prints (to STDOUT) both Pearson and Spearman's correlation coefficients and p-values for root 3hr (R03) ABA-responsive LFCs of ortholog pairs, for all six species pairs (among At, Si, Sp, and Es) and all non-redundant GO terms of size 20~3000:
 ```
 PiP_correlation_matrix_pairwise_orthologs.py -N 6 -1 -n \
@@ -48,13 +48,14 @@ PiP_correlation_matrix_pairwise_orthologs.py -N 6 -1 -n \
 ```
 - The script can also draw "pairs plots" (tested with python 3.8 and seaborn 0.10), comparing LFC values of orthologs pairs of all species pairs, for each GO term and sample.  See the script help ('-h') for details. 
 
-### 3. Statistical test
+### 3. Statistics and ranking
 - Matrices resulted from the step 2 contain columns of p-values estimated for correlation coefficients. These p-values were corrected for multiple testing (g-test), using `stat_multiple_test_correction.py`. See the script help ('-h') for details. 
-- Variance of correlations across all six species pairs (V) were plotted against the median number of genes annotated with the GO term (m), to detect the presence of outliers (i.e. GO terms with large modifications in gene regulation)
+- Variance of correlations across all six species pairs (_V_) were plotted against the median number of genes annotated with the GO term (_m_), to detect the presence of outliers (i.e. GO terms with large modifications in gene regulation)
+- Empirically, we used a ranking based on _V_ * log<sub>2</sub> _m_, to identify GO term-samples showing the largest (in effect sizes) modifications among species pairs.  
 ---
 ## Merging and annotating DAP-seq peaks
 ### 1. Merging peak positions co-occuring among replicates and transcription factors 
-- DAP-seq reads were processed with `DAP_Seq2020.sh` to call peaks using GEM, and the resulting `.narrowPeak` files are used for merging peaks in different replicates
+- DAP-seq reads were processed with `DAP_Seq2020.sh` to call peaks using GEM, and the resulting `.narrowPeak` files are used for merging peaks in different replicates.
 
 ### 2. Annotating DAP-seq peaks 
 - See the script help ('-h') for details. 
