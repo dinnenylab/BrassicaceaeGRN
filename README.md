@@ -36,7 +36,8 @@ response_to_abscisic_acid	THHALV10019152M.V1.0|THHALV10016322M.V1.0|THHALV100289
 - To achieve this, Arabidopsis-homolog gene ID pairs were converted to a custom GO annotation file using `transfer_GO_annotation_4BinGO.py` following instruction in the [BiNGO manual](https://www.psb.ugent.be/cbd/papers/BiNGO/Customize.html). 
 - Using the custom GO annotation, a GO annotation input for a species can be created by running BiNGO with all gene IDs as input and options to print all GO terms without a statistical test. The first and last columns of such BiNGO output were concatanated to create the final GO annotation input as in the [PiP_example_ABA_response_4crucifers](https://github.com/dinnenylab/BrassicaceaeGRN/tree/master/PiP_example_ABA_response_4crucifers) folder.
 
-*Note: not only GO terms, any gene sets (e.g. ortholog pairs with a certain _cis_-regulatory motif in their promoters) can be added.
+*Note: GO IDs can be used instead of GO terms, e.g. "GO:0009737" or "9737" instead of "response to abscisic acid."  
+*Note: not only GO terms, any gene sets (e.g. ortholog pairs with a certain _cis_-regulatory motif in their promoters) can be added to the GO annotation input.
 
 ### 2. Pairwise comparisons of gene expression
 - Once the two input files are ready, run `PiP_correlation_matrix_pairwise_orthologs.py` to obtain the matrix of correlations of gene expression LFC between ortholog pairs of all species pairs, for all GO terms and samples.
