@@ -4,6 +4,7 @@
 ---
 ## Custom scripts
 For Python scripts, type the script followed by '-h' for more details on pre-requisite, input, parameters/options, and output.
+
 For shell scripts, see annotations inside for more details.
 
 ### Correlation matrices for the Phylogenetically informed Profiling (PiP) analysis
@@ -20,7 +21,7 @@ P114315	na	na	Sp5g19900.1	Thhalv10018708m.v1.0
 P114316	na	na	Sp5g19260.1	Thhalv10018768m.v1.0
 P114317	na	na	Sp5g19300.1	Thhalv10019022m.v1.0
 ``` 
-- DESeq2 LFC columns, after filtering, for each sample were merged to the ortholog pair columns using `merge_by_NthCol.py` (see resulted final input files in the `PiP_example_ABA_response_4crucifers` folder) 
+- DESeq2 LFC columns, after filtering, for each sample were merged to the ortholog pair columns using `merge_by_NthCol.py` (see resulted final input files in the [PiP_example_ABA_response_4crucifers](https://github.com/dinnenylab/BrassicaceaeGRN/tree/master/PiP_example_ABA_response_4crucifers) folder) 
 
 1.2 GO annotation input
 - GO annotation for _Arabidopsis thaliana_ (obtained from [GO consortium](http://geneontology.org/) on July 1st, 2020) was transferred to their homologs in non-model species, if the homolog pair showed protein alignments (e<10<sup>-5</sup>) in total covering over 70% of the length of both query and subject genes.
@@ -33,7 +34,7 @@ response_to_abscisic_acid	THHALV10019152M.V1.0|THHALV10016322M.V1.0|THHALV100289
 ...
 ```
 - To achieve this, Arabidopsis-homolog gene ID pairs were converted to a custom GO annotation file using `transfer_GO_annotation_4BinGO.py` following instruction in the [BiNGO manual](https://www.psb.ugent.be/cbd/papers/BiNGO/Customize.html). 
-- Using the custom GO annotation, a GO annotation input for a species can be created by running BiNGO with all gene IDs as input and options to print all GO terms without a statistical test. The first and last columns of such BiNGO output were concatanated to create the final GO annotation input as in the `PiP_example_ABA_response_4crucifers` folder. 
+- Using the custom GO annotation, a GO annotation input for a species can be created by running BiNGO with all gene IDs as input and options to print all GO terms without a statistical test. The first and last columns of such BiNGO output were concatanated to create the final GO annotation input as in the [PiP_example_ABA_response_4crucifers](https://github.com/dinnenylab/BrassicaceaeGRN/tree/master/PiP_example_ABA_response_4crucifers) folder. 
 
 #### 2. Pairwise comparison of gene expression
 - Once the two input files were ready, run `PiP_correlation_matrix_pairwise_orthologs.py` to obtain the matrix of correlations of gene expression LFC between ortholog pairs of all species pairs, for all GO terms and samples.
