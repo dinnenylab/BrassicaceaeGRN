@@ -5,7 +5,7 @@
 - For shell scripts, see annotations inside for more details.
 - Go to:  
 [Correlation matrices for the Phylogenetically informed Profiling (PiP) analysis](https://github.com/dinnenylab/BrassicaceaeGRN#correlation-matrices-for-the-phylogenetically-informed-profiling-pip-analysis)  
-[Merging and annotating DAP-seq peaks](https://github.com/dinnenylab/BrassicaceaeGRN#correlation-matrices-for-the-phylogenetically-informed-profiling-pip-analysis)
+[Merging and annotating DAP-seq peaks](https://github.com/dinnenylab/BrassicaceaeGRN#merging-and-annotating-dap-seq-peaks)
 ---
 ## Correlation matrices for the Phylogenetically informed Profiling (PiP) analysis
 ### 1. Preparing input files
