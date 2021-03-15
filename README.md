@@ -56,7 +56,7 @@ PiP_correlation_matrix_pairwise_orthologs.py -N 6 -1 -n \
 ---
 ## Merging and annotating DAP-seq peaks
 ### 1. Merging peak positions co-occuring among replicates and transcription factors 
-- DAP-seq reads were processed with `DAP_Seq2020.sh` to call peaks using GEM, and the resulting `.narrowPeak` files are used for merging peaks in different replicates.
+- DAP-seq reads were processed with `DAP_Seq2020.sh` to call peaks using GEM, and the resulting [.narrowPeak](https://genome.ucsc.edu/FAQ/FAQformat.html#format12) files are used for merging peaks in different replicates.
 
 ### 2. Annotating DAP-seq peaks 
 - See the script help ('-h') for details. 
