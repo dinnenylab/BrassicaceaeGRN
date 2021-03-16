@@ -57,7 +57,7 @@ PiP_correlation_matrix_pairwise_orthologs.py -N 6 -1 -n \
 ## Merging and annotating DAP-seq peaks
 ### 1. Merging peak positions co-occuring among replicates and transcription factors 
 - DAP-seq reads were processed with `DAP_Seq2020.sh` to call significant peaks using [GEM](https://groups.csail.mit.edu/cgs/gem/), and the resulting [.narrowPeak](https://genome.ucsc.edu/FAQ/FAQformat.html#format12) files are used for downstream analysis.   
-- We used an additional filter based on DAP-seq replicates to filter out high-confidence binding events. For all DAP-seq replicated experiments, we selected GEM-called binding events whose center positions overlapping within three nucleotide positions in at least two replicates using `bedtools merge`. Detailed shell scripts for this process are in `mergebed[At|Si|Sp|Es].txt`.   
+- We used an additional filter based on DAP-seq replicates to filter out high-confidence binding events. For all DAP-seq replicated experiments, we selected GEM-called binding events whose center positions overlapping within three nucleotide positions in at least two replicates using [bedtools merge](https://bedtools.readthedocs.io/en/latest/content/tools/merge.html#). Detailed shell scripts for this process are in `mergebed[At|Si|Sp|Es].txt`.   
 - Overlaps among replicated-merged high-confidence binding events were identified by again `bedtools merge` and the center coordinates of these ABFs-binding peak positions were used for peak annotation and counting overlaps among ABFs, as depicted in the following cartoon: 
 <img src="https://user-images.githubusercontent.com/748486/111260241-77969500-85ee-11eb-95e2-0d48e74069dc.png" width="500">
 
@@ -68,7 +68,7 @@ PiP_correlation_matrix_pairwise_orthologs.py -N 6 -1 -n \
 echo -e 'ACGT\tACGT' > ACGT.txt
 find_motifs_in_sequences.py ACGT.txt At_genome.fa ACGT_in_At.txt
 ```
-- Second, we marked the positions of ABREs in a genome, with redundant positions called by multiple ABRE definitions consolidated, as follows:
+- Second, we marked the positions of all ABREs in a genome, with redundant positions called by multiple ABRE definitions consolidated, as follows:
 ```
 find_motifs_in_sequences.py ABRE.txt At_genome.fa ABRE_in_At.txt
 sort -k1,1 -k2,2n ABRE_in_At.txt > ABRE_in_At.sorted.txt
@@ -89,13 +89,14 @@ genomic_regions_mark_overlaps.py -r ACGT_in_At.ABRE_marked.uID.txt 1 \
 ```
 
 1.2 Counting ABFs-binding DAP-seq peak positions adjacent to a gene model
- 
-
-- See the script help ('-h') for details. 
+- We identified genomic regions adjacent to gene models, as 5' distal (5pD), 5' proximal (5pP), exons, introns, 3' proximal (3pP), and 3' distal. Exons and introns can be combined to gene body (gCDS):
 ```
-find_motifs_in_promoters.py
-genomic_regions_annotate.py
-genomic_regions_collapse_overlaps.py
-genomic_regions_extract_sequences.py
-genomic_regions_mark_overlaps.py
+count_chrom_sizes.py At.genome.fa At.genome.chr.list
+genomic_regions_annotate.py At.gtf At.genome.chr.list At.genomicRegions.list 
 ```
+- To ABFs-binding peak positions, we added whether they appear adjacent to a gene model:  
+```
+genomic_regions_mark_overlaps.py At.genomicRegions.list 1 \
+                  Peaks_in_At.ACGT-ABRE_marked.bed Peaks_in_At.annotated.bed
+```  
+*Note: a peak position can appear in multiple genomic regions of closely located neighboring genes. In this case, all overlaps associated with all neighboring genes are reported separately. The resulting annotation was used to identify all ABFs-binding events occuring adjacent to each gene. 
