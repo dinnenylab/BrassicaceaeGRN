@@ -77,10 +77,13 @@ grep -vP "\t0$" temp.At > ABRE_in_At.sorted.collapsed.txt
 ```
 - Third, we marked all ACGTs that constitute a part of an ABRE, as follows:
 ```
-genomic_regions_mark_regions_included_in_others.py
+genomic_regions_mark_regions_included_in_others.py ABRE_in_At.sorted.collapsed.txt 1 ACGT_in_At.txt ACGT_in_At.ABRE_marked.txt
+awk '{print "ACGT_"$1":"$2"-"$3"="$5"\t"$1"\t"$2"\t"$3}' ACGT_in_At.ABRE_marked.txt | sed "s/=_na_//g" > ACGT_in_At.ABRE_marked.uID.txt
 ```
-- 
-
+- Finally, we marked ABFs-binding peak positions whether they coincide with an ACGT or ABRE:
+```
+genomic_regions_mark_regions_included_in_others.py -r ACGT_in_At.ABRE_marked.uID.txt 1 Peaks_in_At.bed Peaks_in_At.ACGT-ABRE_marked.bed 
+```
 
 1.2 Counting ABFs-binding DAP-seq peak positions adjacent to a gene model
  
