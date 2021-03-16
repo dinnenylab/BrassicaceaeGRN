@@ -9,7 +9,7 @@
 ---
 ## Correlation matrices for the Phylogenetically informed Profiling (PiP) analysis
 ### 1. Preparing input files
-1.1 Gene expression of ortholog pairs input
+#### 1.1 Gene expression of ortholog pairs input
 - RNA-seq reads were processed with `RNA_Seq2020.sh` and [DESeq2](https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html) to estimate log<sub>2</sub> fold-change (LFC) in response to ABA treatment.  
 - Ortholog pairs were determined between each pair of species, as reciprocal best homologs using [CLfinder](https://github.com/ohdongha/OrthNet#running-clfinder), and organized as follows (i.e. tab-delimited with an ortholog pair ID followed by gene IDs for each species pairs; species other than the pair were filled with placeholders, e.g. "na"):
 ```
@@ -23,7 +23,7 @@ P114317	na	na	Sp5g19300.1	Thhalv10019022m.v1.0
 ``` 
 - DESeq2 LFC columns for each sample, after filtering, were merged to the ortholog pair columns above using `merge_by_NthCol.py` (see final input files in the [PiP_example_ABA_response_4crucifers](https://github.com/dinnenylab/BrassicaceaeGRN/tree/master/PiP_example_ABA_response_4crucifers) folder) 
 
-1.2 GO annotation input
+#### 1.2 GO annotation input
 - GO annotation for _Arabidopsis thaliana_ (obtained from [GO consortium](http://geneontology.org/) on July 1st, 2020) was transferred to their homologs in non-model species, if the homolog pair showed protein alignments (e<10<sup>-5</sup>) in total covering over 70% of the length of both query and subject genes.
 - GO annotation for all species were organized as follows (i.e. tab-delimited with GO term, followed by gene IDs separated by "|"; GO terms can appear multiple times for different species) 
 ```
@@ -62,7 +62,7 @@ PiP_correlation_matrix_pairwise_orthologs.py -N 6 -1 -n \
 <img src="https://user-images.githubusercontent.com/748486/111260241-77969500-85ee-11eb-95e2-0d48e74069dc.png" width="500">
 
 ### 2. Annotating DAP-seq peaks 
-1.1 Marking ABFs-binding DAP-seq peak positions coinciding with an ACGT or an ABRE 
+#### 1.1 Marking ABFs-binding DAP-seq peak positions coinciding with an ACGT or an ABRE 
 - First, we marked positions of all ACGT (i.e. ABRE core) in a genome as follows (example for At shown):
 ```
 echo -e 'ACGT\tACGT' > ACGT.txt
@@ -88,7 +88,7 @@ genomic_regions_mark_overlaps.py -r ACGT_in_At.ABRE_marked.uID.txt 1 \
                   Peaks_in_At.bed Peaks_in_At.ACGT-ABRE_marked.bed 
 ```
 
-1.2 Counting ABFs-binding DAP-seq peak positions adjacent to a gene model
+#### 1.2 Counting ABFs-binding DAP-seq peak positions adjacent to a gene model
 - We identified genomic regions adjacent to gene models, as 5' distal (5pD), 5' proximal (5pP), exons, introns, 3' proximal (3pP), and 3' distal. Exons and introns can be combined to gene body (gCDS):
 ```
 count_chrom_sizes.py At.genome.fa At.genome.chr.list
