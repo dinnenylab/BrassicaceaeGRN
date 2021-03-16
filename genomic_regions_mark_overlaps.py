@@ -2,7 +2,6 @@
 import sys, re, argparse
 from argparse import RawTextHelpFormatter
 	
-
 ###################################################
 ### 0. script description and parsing arguments ###
 ###################################################
@@ -33,6 +32,7 @@ synopsis2 = "detailed description:\n\
 by ohdongha@gmail.com 20200127 ver 1.2\n\n"
 
 #version_history
+#20210314 script renamed to "genomic_regions_mark_overlaps.py"
 #20201114 script renamed to "genomic_regions_mark_regions_included_in_others.py"
 #20200127 ver 1.2 # '-r' option added
 #20200125 ver 1.1 # minor modification to the output format
