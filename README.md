@@ -62,6 +62,29 @@ PiP_correlation_matrix_pairwise_orthologs.py -N 6 -1 -n \
 <img src="https://user-images.githubusercontent.com/748486/111260241-77969500-85ee-11eb-95e2-0d48e74069dc.png" width="500">
 
 ### 2. Annotating DAP-seq peaks 
+1.1 Marking ABFs-binding DAP-seq peak positions coinciding with an ACGT or an ABRE 
+- First, we marked positions of all ACGT (i.e. ABRE core) in a genome as follows (example for At shown):
+```
+echo -e 'ACGT\tACGT' > ACGT.txt
+find_motifs_in_sequences.py ACGT.txt At_genome.fa ACGT_in_At.txt
+```
+- Second, we marked the positions of ABREs in a genome, with redundant positions called by multiple ABRE definitions consolidated, as follows:
+```
+find_motifs_in_sequences.py ABRE.txt At_genome.fa ABRE_in_At.txt
+sort -k1,1 -k2,2n ABRE_in_At.txt > ABRE_in_At.sorted.txt
+genomic_regions_collapse_overlaps.py ABRE_in_At.sorted.txt 1 temp.At
+grep -vP "\t0$" temp.At > ABRE_in_At.sorted.collapsed.txt
+```
+- Third, we marked all ACGTs that constitute a part of an ABRE, as follows:
+```
+genomic_regions_mark_regions_included_in_others.py
+```
+- 
+
+
+1.2 Counting ABFs-binding DAP-seq peak positions adjacent to a gene model
+ 
+
 - See the script help ('-h') for details. 
 ```
 find_motifs_in_promoters.py

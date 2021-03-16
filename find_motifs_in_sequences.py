@@ -2,7 +2,7 @@
 import sys, re
 
 synopsis = "\n\
-find_motifs_in_promoters.py <cis-elements.list> <promoters.fa> <output.txt>\n\
+find_motifs_in_sequences.py <cis-elements.list> <sequences.fa> <output.txt>\n\
  - find locations of elements in <cis-elements.list>, within each sequence in\n\
    <promoters.fa>, and print to tab-delimited <output.txt>;\n\
  - <cis-elements.list> contains an element ID and an element pattern, tab-\n\
