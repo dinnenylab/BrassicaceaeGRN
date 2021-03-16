@@ -56,8 +56,8 @@ PiP_correlation_matrix_pairwise_orthologs.py -N 6 -1 -n \
 ---
 ## Merging and annotating DAP-seq peaks
 ### 1. Merging peak positions co-occuring among replicates and transcription factors 
-- DAP-seq reads were processed with `DAP_Seq2020.sh` to call significant peaks using [GEM](https://groups.csail.mit.edu/cgs/gem/), and the resulting [.narrowPeak](https://genome.ucsc.edu/FAQ/FAQformat.html#format12) files are used for downstream analysis.   
-- We used an additional filter based on DAP-seq replicates to filter out high-confidence binding events. For all DAP-seq replicated experiments, we selected GEM-called binding events whose center positions overlapping within three nucleotide positions in at least two replicates using [bedtools merge](https://bedtools.readthedocs.io/en/latest/content/tools/merge.html#). Detailed shell scripts for this process are in `mergebed[At|Si|Sp|Es].txt`.   
+- DAP-seq reads were processed with `DAP_Seq2020.sh` to call significant peaks using [GEM](https://groups.csail.mit.edu/cgs/gem/), and the resulting [.narrowPeak](https://genome.ucsc.edu/FAQ/FAQformat.html#format12) files were used for downstream analysis.   
+- We used an additional filter based on DAP-seq replicates to detect high-confidence binding events. After concatenating all DAP-seq replicated experiments, we selected GEM-called binding events whose center positions appearing within six nucleotide positions in at least two replicates using [bedtools merge](https://bedtools.readthedocs.io/en/latest/content/tools/merge.html#). Detailed shell scripts for this process are in `mergebed[At|Si|Sp|Es].txt`.   
 - Overlaps among replicated-merged high-confidence binding events were identified by again `bedtools merge` and the center coordinates of these ABFs-binding peak positions were used for peak annotation and counting overlaps among ABFs, as depicted in the following cartoon: 
 <img src="https://user-images.githubusercontent.com/748486/111260241-77969500-85ee-11eb-95e2-0d48e74069dc.png" width="500">
 
@@ -75,28 +75,28 @@ sort -k1,1 -k2,2n ABRE_in_At.txt > ABRE_in_At.sorted.txt
 genomic_regions_collapse_overlaps.py ABRE_in_At.sorted.txt 1 temp.At
 grep -vP "\t0$" temp.At > ABRE_in_At.sorted.collapsed.txt
 ```
-- Third, we marked all ACGTs that constitute a part of an ABRE, as follows:
+- Third, we marked all ACGTs that constitute the core of an ABRE, as follows:
 ```
 genomic_regions_mark_overlaps.py ABRE_in_At.sorted.collapsed.txt 1 \
                   ACGT_in_At.txt ACGT_in_At.ABRE_marked.txt
 awk '{print "ACGT_"$1":"$2"-"$3"="$5"\t"$1"\t"$2"\t"$3}' ACGT_in_At.ABRE_marked.txt \
                   | sed "s/=_na_//g" > ACGT_in_At.ABRE_marked.uID.txt
 ```
-- Finally, we marked ABFs-binding peak positions whether they coincide with an ACGT or ABRE:
+- Finally, we marked ABFs-binding peak positions that coincide with an ACGT or an ABRE:
 ```
 genomic_regions_mark_overlaps.py -r ACGT_in_At.ABRE_marked.uID.txt 1 \
                   Peaks_in_At.bed Peaks_in_At.ACGT-ABRE_marked.bed 
 ```
 
 #### 2.2 Counting ABFs-binding DAP-seq peak positions adjacent to a gene model
-- We identified genomic regions adjacent to gene models, as 5' distal (5pD), 5' proximal (5pP), exons, introns, 3' proximal (3pP), and 3' distal. Exons and introns can be combined to gene body (gCDS):
+- We identified genomic regions adjacent to gene models, as 5' distal (5pD), 5' proximal (5pP), exons, introns, 3' proximal (3pP), and 3' distal (see `genomic_region_annotate.py -h` for details). Exons and introns can be combined to gene body (gCDS):
 ```
 count_chrom_sizes.py At.genome.fa At.genome.chr.list
 genomic_regions_annotate.py At.gtf At.genome.chr.list At.genomicRegions.list 
 ```
-- To ABFs-binding peak positions, we added whether they appear adjacent to a gene model:  
+- To ABFs-binding peak positions, we added they occured in a genomic region adjacent to a gene model:  
 ```
 genomic_regions_mark_overlaps.py At.genomicRegions.list 1 \
                   Peaks_in_At.ACGT-ABRE_marked.bed Peaks_in_At.annotated.bed
 ```  
-*Note: a peak position can appear in multiple genomic regions of closely located neighboring genes. In this case, all overlaps associated with all neighboring genes are reported separately. The resulting annotation was used to identify all ABFs-binding events occuring adjacent to each gene. 
+*Note: a peak position may appear in multiple genomic regions of closely located neighboring genes. In this case, all overlaps associated with all neighboring genes are reported separately. The resulting annotation was used to identify all ABFs-binding events occuring adjacent to each gene. 
