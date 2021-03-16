@@ -62,7 +62,7 @@ PiP_correlation_matrix_pairwise_orthologs.py -N 6 -1 -n \
 <img src="https://user-images.githubusercontent.com/748486/111260241-77969500-85ee-11eb-95e2-0d48e74069dc.png" width="500">
 
 ### 2. Annotating DAP-seq peaks 
-#### 1.1 Marking ABFs-binding DAP-seq peak positions coinciding with an ACGT or an ABRE 
+#### 2.1 Marking ABFs-binding DAP-seq peak positions coinciding with an ACGT or an ABRE 
 - First, we marked positions of all ACGT (i.e. ABRE core) in a genome as follows (example for At shown):
 ```
 echo -e 'ACGT\tACGT' > ACGT.txt
@@ -88,7 +88,7 @@ genomic_regions_mark_overlaps.py -r ACGT_in_At.ABRE_marked.uID.txt 1 \
                   Peaks_in_At.bed Peaks_in_At.ACGT-ABRE_marked.bed 
 ```
 
-#### 1.2 Counting ABFs-binding DAP-seq peak positions adjacent to a gene model
+#### 2.2 Counting ABFs-binding DAP-seq peak positions adjacent to a gene model
 - We identified genomic regions adjacent to gene models, as 5' distal (5pD), 5' proximal (5pP), exons, introns, 3' proximal (3pP), and 3' distal. Exons and introns can be combined to gene body (gCDS):
 ```
 count_chrom_sizes.py At.genome.fa At.genome.chr.list
