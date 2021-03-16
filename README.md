@@ -33,7 +33,7 @@ response_to_abscisic_acid	SP7G00210.1|SP6G19050.1|SP4G25450.1|...
 response_to_abscisic_acid	THHALV10019152M.V1.0|THHALV10016322M.V1.0|THHALV10028988M.V1.0|...
 ...
 ```
-- To achieve this, Arabidopsis-homolog gene ID pairs were converted to a custom GO annotation file using `transfer_GO_annotation_4BinGO.py` following instruction in the [BiNGO manual](https://www.psb.ugent.be/cbd/papers/BiNGO/Customize.html). 
+- To achieve this, Arabidopsis-homolog gene ID pairs were converted to a custom GO annotation file using `transfer_GO_annotation_4BinGO.py` following instructions in the [BiNGO manual](https://www.psb.ugent.be/cbd/papers/BiNGO/Customize.html). 
 - Using the custom GO annotation, a GO annotation input for a species can be created by running BiNGO with all gene IDs as input and options to print all GO terms without a statistical test. The first and last columns of such BiNGO output were concatanated to create the final GO annotation input as in the [PiP_example_ABA_response_4crucifers](https://github.com/dinnenylab/BrassicaceaeGRN/tree/master/PiP_example_ABA_response_4crucifers) folder.
 
 *Note: GO IDs can be used instead of GO terms, e.g. "GO:0009737" or "9737" instead of "response to abscisic acid."  
@@ -52,7 +52,7 @@ PiP_correlation_matrix_pairwise_orthologs.py -N 6 -1 -n \
 ### 3. Statistics and ranking
 - Matrices resulted from the step 2 contain columns of p-values estimated for correlation coefficients. These p-values were corrected for multiple testing (g-test), using `stat_multiple_test_correction.py`. See the script help ('-h') for details. 
 - Variance of Spearman's correlations across all six species pairs (_V_) were plotted against the median number of ortholog pairs annotated with the GO term (_m_), to detect the presence of outliers (i.e. GO terms with large modifications in gene regulation). 
-- The _V_ * _m_ plot showed that smaller GO terms tend to have larger _V_, likely due to noises. Empirically, we ranked GO-samples based on higher _V_ * log<sub>2</sub> _m_ values, to identify larger (in effect sizes) modifications among species pairs and, likely, lineages.
+- In the _V_ * _m_ plot, smaller GO terms tended to have larger _V_, likely due to noises. Empirically, we ranked GO-samples based on higher _V_ * log<sub>2</sub> _m_ values, to identify larger (in effect sizes) modifications among species pairs and, likely, lineages.
 ---
 ## Merging and annotating DAP-seq peaks
 ### 1. Merging peak positions co-occuring among replicates and transcription factors 
