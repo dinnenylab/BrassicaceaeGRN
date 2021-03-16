@@ -51,8 +51,8 @@ PiP_correlation_matrix_pairwise_orthologs.py -N 6 -1 -n \
 
 ### 3. Statistics and ranking
 - Matrices resulted from the step 2 contain columns of p-values estimated for correlation coefficients. These p-values were corrected for multiple testing (g-test), using `stat_multiple_test_correction.py`. See the script help ('-h') for details. 
-- Variance of correlations across all six species pairs (_V_) were plotted against the median number of genes annotated with the GO term (_m_), to detect the presence of outliers (i.e. GO terms with large modifications in gene regulation)
-- Empirically, we used a ranking based on _V_ * log<sub>2</sub> _m_, to identify GO term-samples showing the largest (in effect sizes) modifications among species pairs.  
+- Variance of Spearman's correlations across all six species pairs (_V_) were plotted against the median number of ortholog pairs annotated with the GO term (_m_), to detect the presence of outliers (i.e. GO terms with large modifications in gene regulation). 
+- The _V_ * _m_ plot showed that smaller GO terms tend to have larger _V_, likely due to noises. Empirically, we ranked GO-samples based on higher _V_ * log<sub>2</sub> _m_ values, to identify larger (in effect sizes) modifications among species pairs and, likely, lineages.
 ---
 ## Merging and annotating DAP-seq peaks
 ### 1. Merging peak positions co-occuring among replicates and transcription factors 
