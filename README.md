@@ -57,7 +57,7 @@ PiP_correlation_matrix_pairwise_orthologs.py -N 6 -1 -n \
 ## Merging and annotating DAP-seq peaks
 ### 1. Merging peak positions co-occuring among replicates and transcription factors 
 - DAP-seq reads were processed with `DAP_Seq2020.sh` to call significant peaks using [GEM](https://groups.csail.mit.edu/cgs/gem/), and the resulting [.narrowPeak](https://genome.ucsc.edu/FAQ/FAQformat.html#format12) files were used for downstream analysis.   
-- We used an additional filter based on DAP-seq replicates to detect high-confidence binding events. After concatenating all DAP-seq replicated experiments, we selected GEM-called binding events whose center positions appearing within six nucleotide positions in at least two replicates using [bedtools merge](https://bedtools.readthedocs.io/en/latest/content/tools/merge.html#). Detailed shell scripts for this process are in `mergebed[At|Si|Sp|Es].txt`.   
+- We used an additional filter based on DAP-seq replicates to detect high-confidence binding events. After concatenating all DAP-seq replicated experiments, we selected GEM-called binding events whose center positions appearing within six nucleotide positions in at least two replicates using [bedtools merge](https://bedtools.readthedocs.io/en/latest/content/tools/merge.html#). Detailed shell scripts for this process are in `mergebed[At|Si|Sp|Es]_YS.txt`.   
 - Overlaps among replicated-merged high-confidence binding events were identified by again `bedtools merge` and the center coordinates of these ABFs-binding peak positions were used for peak annotation and counting overlaps among ABFs, as depicted in the following cartoon: 
 <img src="https://user-images.githubusercontent.com/748486/111260241-77969500-85ee-11eb-95e2-0d48e74069dc.png" width="500">
 
