@@ -8,13 +8,13 @@ find_motifs_in_sequences.py <cis-elements.list> <sequences.fa> <output.txt>\n\
  - <cis-elements.list> contains an element ID and an element pattern, tab-\n\
    delimited, one element per line; an element pattern can be either a sequence\n\
    or a python regular expression pattern;\n\
- - <promoters.fa> should be formatted as one-liner sequences (e.g. using\n\
+ - <sequences.fa> should be formatted as one-liner sequences (e.g. using\n\
    'fasta-formatter'); in a sequence header (ID), only the first field before\n\
    the first space or tab is used as the promoter ID;\n\
  - <output.txt> contains the promoter ID, followed by start and end positions,\n\
    the matched sequence, the element ID, and the element pattern, tab-delimited\n\
    and one match per line \n\
- - searches only the top strand of <promoter.fa>, hence add inverted sequences\n\
+ - searches only the top strand of <sequences.fa>, hence add inverted sequences\n\
    to <cis-elements.list> for all elements;\n\
  - for overlapping matches of the same element, only the first occurrence are\n\
    reported, while all non-overlapping matches are reported;\n\
