@@ -24,13 +24,21 @@ synopsis2 = "detailed description:\n\
     and merged regardless of matching;\n\
  - '-k'|'--keep_keys' [False]: include the 1st column of <file2> (keys) in the\n\
     merged file; default is not to include, since it will be redundant;\n\
- - '-e filler_when_empty' ['na']: filler string to use when there is no line to\n\
-    merge in <file2>; -e '' will fill in with empty tabs;\n\
+*** options related to when a line in <file1> does not have any match in <file2>;\n\
+ - '-x' [False]: do not print lines in <file1> without a match in <file2>;\n\
+ - '-e filler_when_empty' ['na']: filler string to use when there is no match\n\
+    in <file2>; -e '' will fill in with empty tabs;\n\
+ - '-N totalCol' [0]: set the total number of columns in <file1> - lines in\n\
+    <file1> with different column numbers will be printed as they are, without\n\
+    looking for a match in <file2>; totalCol must be the same or larger than N;\n\
+    if not given (default), all lines in <file1> will be matched to <file2>;\n\
 3. Output:\n\
  - the resulting merged file is printed to STDOUT;\n\
  - the 1st column of <file2>, used as the key, is omitted in the merged file;\n\
-by ohdongha@gmail.com 20210102 ver 0.0.1\n\n"
+by ohdongha@gmail.com 20210124 ver 0.2\n\n"
 #version_history
+# 20210429 ver 0.3 add '-x' to remove <file1> lines without a match in <file2> 
+# 20210124 ver 0.2 add '-N' to set the total column number and skip lines in <file1> with a different number of columns. 
 # 20210102 ver 0.1 bug fix and add '-k' option
 # 20201224 ver 0.0 modified from "join_files_by_NthCol.py"
 
@@ -44,7 +52,9 @@ parser.add_argument('-m', dest="mode", type=int, default= 1)
 parser.add_argument('-n', dest="N", type=int, default= 1)
 parser.add_argument('-H', '--header', action="store_true", default=False)
 parser.add_argument('-k', '--keep_keys', action="store_true", default=False)
+parser.add_argument('-x', dest="exclude_if_no_match", action="store_true", default=False)
 parser.add_argument('-e', dest="filler_when_empty", type=str, default= "na")
+parser.add_argument('-N', dest="totalCol", type=int, default= 0)
 args = parser.parse_args()
 
 # parse options
@@ -60,7 +70,9 @@ else:
 	sys.stderr.write("Warning: '-m mode' parameter out of range; set to default (mode=1)")
 	mode = 1
 
+exclude_if_no_match = args.exclude_if_no_match
 filler = args.filler_when_empty
+number_of_fields_f1 = args.totalCol
 
 
 ##########################
@@ -118,18 +130,21 @@ for line in args.file1:
 		if args.header and header :
 			print( line_merged + '\t' + header_f2 ) 
 			header = False
-		else:
+		elif number_of_fields_f1 == 0 or number_of_fields_f1 == len(line.split('\t')):
 			key_f1 = line.split('\t')[N-1].strip()
-			if key_f1 not in lines_in_f2_dict:
-				for i in range(0, number_of_fields_to_fill):
-					line_merged = line_merged + '\t' + filler
-				print( line_merged )
-			else:
+			if key_f1 in lines_in_f2_dict:
 				if mode == 1:
 					print ( line.strip() + '\t' +  lines_in_f2_dict[key_f1][0] )
 				else:
 					for n in range(0, len( lines_in_f2_dict[key_f1] ) ):
 						print ( line.strip() + '\t' +  lines_in_f2_dict[key_f1][n] )
+			elif not exclude_if_no_match: #v.0.3
+				for i in range(0, number_of_fields_to_fill):
+					line_merged = line_merged + '\t' + filler
+				print( line_merged )
+		elif number_of_fields_f1 != len(line.split('\t')):
+			print( line_merged ) # v0.2 skip <file1> lines not matching the set column number and print as they are, 
+		
 	except IndexError :
 		print( "Warning: line %d has a non-valid column in %s\n" % (num_line, args.file1.name) )
 
