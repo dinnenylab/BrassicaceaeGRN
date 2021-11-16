@@ -68,7 +68,7 @@ PiP_correlation_matrix_pairwise_orthologs.py -N 6 -1 -n \
 echo -e 'ACGT\tACGT' > ACGT.txt
 find_motifs_in_sequences.py ACGT.txt At_genome.fa ACGT_in_At.txt
 ```
-*Note: the genome sequence (e.g. At_genome.fa) must be formatted as a "one-liner" fasta, i.e. for each sequence, after the sequence header (the line starts with ">"), all nuceoltide sequences should be in the next line without a space.  The easiest way to achieve this is to run ```fasta_formatter``` included in the [FASTX-Toolkit](http://hannonlab.cshl.edu/fastx_toolkit/commandline.html#fasta_formatter_usage). The compiled ```fasta_formatter``` binary from the FASTX-Toolkit is included here (AGP Lincense). 
+*Note: the genome sequence (e.g. At_genome.fa) must be formatted as a "one-liner" fasta, i.e. for each sequence, after the sequence header (the line starts with ">"), all nuceoltide sequences should be in the next line without a space.  The easiest way to achieve this is to run ```fasta_formatter``` included in the [FASTX-Toolkit](http://hannonlab.cshl.edu/fastx_toolkit/commandline.html#fasta_formatter_usage). The compiled ```fasta_formatter``` binary from the FASTX-Toolkit is included here (AGP Lincense). If ```fasta_formatter``` does not work, you could also try this [awk trick](https://www.biostars.org/p/9262/#9264).
 - Second, we marked the positions of all ABREs in a genome, with redundant positions called by multiple ABRE definitions consolidated, as follows:
 ```
 find_motifs_in_sequences.py ABRE.txt At_genome.fa ABRE_in_At.txt
