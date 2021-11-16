@@ -52,9 +52,10 @@ synopsis2 = "detailed description:\n\
      the gene,\n\
   -  'depth' can be used to priotize one category over another, when a genomic\n\
      position is annotated with multiple different categories,\n\
-by ohdongha@gmail.com 20191011 ver 0.1.1\n\n"
+by ohdongha@gmail.com 20191221 ver 0.1.2\n\n"
 
 #version_history
+#20201221 ver 0.1.2 modified to work with python 3
 #20201114 script renamed to "genomic_regions_annotate.py"
 #20191011 ver 0.1.1 when a region is entirely out of bound of a chromosome, print "out_of_bound" as the "depth", 
 #20190825 ver 0.1 added '-L' option 
@@ -134,7 +135,7 @@ strand = ""
 ninthColumn_records = ""
 geneID = ""
 
-print "reading %s as the <input.gtf>:" % args.input_gtf.name
+print( "reading %s as the <input.gtf>:" % args.input_gtf.name )
 
 for line in args.input_gtf:
 	newline_accepted = False
@@ -156,7 +157,7 @@ for line in args.input_gtf:
 					geneID = record.strip().split(' ')[1]
 					newline_accepted = True
 	except (ValueError, IndexError) :
-		print "an invalid line: %s" % line
+		print( "an invalid line: %s" % line )
 		newline_accepted = False
 	if newline_accepted and type == "CDS" :
 		if geneID not in CDS_start_dict:
@@ -181,7 +182,7 @@ for line in args.input_gtf:
 #			mRNA_end_dict[geneID] = max(end, mRNA_end_dict[geneID])
 #			...
 
-print "## %d gene models were found in %s.\n" % ( len(CDS_start_dict) , args.input_gtf.name )
+print( "## %d gene models were found in %s.\n" % ( len(CDS_start_dict) , args.input_gtf.name ) )
 args.input_gtf.close()
 
 
@@ -190,15 +191,15 @@ args.input_gtf.close()
 ###########################################
 chr_len_dict = dict() # key = chrID, value = chr_len
 
-print "reading %s as the <input_genome_index>:" % args.input_genome_index.name
+print( "reading %s as the <input_genome_index>:" % args.input_genome_index.name )
 for line in args.input_genome_index:
 	tok = line.split('\t')
 	try:
 		chr_len_dict[ tok[0].split()[0].strip() ] = int( tok[1] ) # only the string before the first space considered as a chrID, 
 	except (ValueError, IndexError):
-		print "Invalid line found in %s: %s" % (args.input_genome_index.name, line)
+		print( "Invalid line found in %s: %s" % (args.input_genome_index.name, line) )
 
-print "## %d chromosome/scaffold/contigs read from %s.\n" % ( len( chr_len_dict ), args.input_genome_index.name)
+print( "## %d chromosome/scaffold/contigs read from %s.\n" % ( len( chr_len_dict ), args.input_genome_index.name) )
 args.input_genome_index.close()
 
 
@@ -270,7 +271,7 @@ uID = ""
 start = 0
 end = 0
 
-print "writing annotated genomic regions to %s:" % outfile_name
+print( "writing annotated genomic regions to %s:" % outfile_name )
 #args.outfile.write("uID\tchrID\tstart\tend\tannotation\tdepth\n") # writing the header
 args.outfile.write("uID\tchrID\tstart\tend\tdepth\n") # writing the header
 
@@ -317,14 +318,14 @@ for c in exon_categories: # c == category
 #				annotation = "%s_of_%s@%s:%d-%d(%s)" % (c, g, chr_dict[g], CDS_start_dict[g], CDS_end_dict[g], str_dict[g])
 #				args.outfile.write( "%s\t%s\t%d\t%d\t%s\t%d\n" % (uID, chr_dict[g], start, end, annotation, depth_dict[c]) )		
 
-print "## genomic regions for %d protein-coding gene models (ORFs) written to %s.\n" % ( len( CDS_start_dict ), args.outfile.name)
+print( "## genomic regions for %d protein-coding gene models (ORFs) written to %s.\n" % ( len( CDS_start_dict ), args.outfile.name) )
 args.outfile.close()
 
 ## sort the output file
-print "sorting %s:" % outfile_name
+print( "sorting %s:" % outfile_name )
 i = datetime.datetime.now()
 temp_filename = "genomic_regions_" + i.strftime('%Y%m%d_%H%M%S')
 subprocess.call("awk 'NR == 1; NR > 1 {print $0 | \"sort -k2,2 -k3,3n\"}' " + outfile_name + " > " + temp_filename , shell=True)
 subprocess.call("mv " + temp_filename + " " + outfile_name , shell=True)
 
-print "all done\n"
+print( "all done\n" )
