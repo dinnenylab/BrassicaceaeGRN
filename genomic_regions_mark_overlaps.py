@@ -29,9 +29,10 @@ synopsis2 = "detailed description:\n\
      <target>; if the target region includes multiple <query> regions, print\n\
      the line in <target> multiple times with each uID; [False]\n\
   - '-c'|'--counter': report progress per every X lines; [10000]\n\
-by ohdongha@gmail.com 20200127 ver 1.2\n\n"
+by ohdongha@gmail.com 20211115 ver 1.2.1\n\n"
 
 #version_history
+#21211115 ver 1.2.1 modified to work with python 3
 #20210314 script renamed to "genomic_regions_mark_overlaps.py"
 #20201114 script renamed to "genomic_regions_mark_regions_included_in_others.py"
 #20200127 ver 1.2 # '-r' option added
@@ -52,9 +53,9 @@ parser.add_argument('-c', '--counter', type=int, default=10000)
 
 args = parser.parse_args()
 
-fin_query = open(args.query, "rU")
+fin_query = open(args.query, "r")
 chrID_colIndex = args.N
-fin_target = open(args.target, "rU")
+fin_target = open(args.target, "r")
 fout = open(args.output, "w")
 
 
@@ -95,9 +96,9 @@ for line in fin_query:
 	except (IndexError, ValueError) :
 		faultyLines_in_region_table = faultyLines_in_region_table +1
 
-print "Reading <query> file: %s \n" % fin_query.name
-print "Out of total %d line in query, %d were rejected.\n" % (lines_in_region_table, faultyLines_in_region_table)
-print "Now marking regions in <target> file: %s \n" % fin_target.name
+print( "Reading <query> file: %s \n" % fin_query.name )
+print( "Out of total %d line in query, %d were rejected.\n" % (lines_in_region_table, faultyLines_in_region_table) )
+print( "Now marking regions in <target> file: %s \n" % fin_target.name )
 fin_query.close()
 
 
@@ -137,9 +138,9 @@ for line in fin_target:
 	except (ValueError, IndexError):
 		pass
 
-print "\n\nFor total ", Lines, " regions in ", sys.argv[3].strip(), ", ", collectedLines, " were marked."
-print "Printing to ", sys.argv[4].strip(), ": \n"
+print( "\n\nFor total ", Lines, " regions in ", sys.argv[3].strip(), ", ", collectedLines, " were marked." )
+print( "Printing to ", sys.argv[4].strip(), ": \n" )
 fin_target.close()
 fout.close()
 
-print "done"
+print( "done" )
