@@ -35,8 +35,9 @@ synopsis2 = "detailed description:\n\
 3. Output:\n\
  - the resulting merged file is printed to STDOUT;\n\
  - the 1st column of <file2>, used as the key, is omitted in the merged file;\n\
-by ohdongha@gmail.com 20210124 ver 0.2\n\n"
+by ohdongha@gmail.com 20220531 ver 0.3.1\n\n"
 #version_history
+# 20220531 ver 0.3.1 fix a bug where certain warnings are printed to stdout rather than stderr 
 # 20210429 ver 0.3 add '-x' to remove <file1> lines without a match in <file2> 
 # 20210124 ver 0.2 add '-N' to set the total column number and skip lines in <file1> with a different number of columns. 
 # 20210102 ver 0.1 bug fix and add '-k' option
@@ -146,6 +147,6 @@ for line in args.file1:
 			print( line_merged ) # v0.2 skip <file1> lines not matching the set column number and print as they are, 
 		
 	except IndexError :
-		print( "Warning: line %d has a non-valid column in %s\n" % (num_line, args.file1.name) )
+		sys.stderr.write( "Warning: line %d has a non-valid column in %s\n" % (num_line, args.file1.name) )
 
 args.file1.close()
