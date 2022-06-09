@@ -35,8 +35,9 @@ synopsis2 = "detailed description:\n\
 3. Output:\n\
  - the resulting merged file is printed to STDOUT;\n\
  - the 1st column of <file2>, used as the key, is omitted in the merged file;\n\
-by ohdongha@gmail.com 20220531 ver 0.3.1\n\n"
+by ohdongha@gmail.com 20220609 ver 0.3.2\n\n"
 #version_history
+# 20220609 ver 0.3.2 fix a bug where empty columns at the end of a records "stripped" + single column <file2>
 # 20220531 ver 0.3.1 fix a bug where certain warnings are printed to stdout rather than stderr 
 # 20210429 ver 0.3 add '-x' to remove <file1> lines without a match in <file2> 
 # 20210124 ver 0.2 add '-N' to set the total column number and skip lines in <file1> with a different number of columns. 
@@ -88,27 +89,35 @@ header = True
 
 for line in args.file2:
 	line_to_add = ""
-	tok = line.strip().split('\t')
+	tok = line.strip(" \n").split('\t') # v.0.3.2
 	if args.keep_keys:
-		line_to_add = line.strip()
+		line_to_add = line.strip(" \n")
 	else:
 		line_to_add = '\t'.join( tok[1:] )
 	
-	if header: # counting fields in <file2> to "fill" with "filler" when there is no match,
-		number_of_fields_in_f2 = len(tok)
-	elif number_of_fields_in_f2 != len(tok):
-		sys.stderr.write("Warning: a line in %s has a different number of fields:\n" % args.file2.name )
-		sys.stderr.write(line)
-		
 	if header and args.header:
 		header_f2 = line_to_add
-		header = False
 	elif tok[0].strip() not in lines_in_f2_dict:
 		lines_in_f2_dict[ tok[0].strip() ] = [ line_to_add ]
 	else:
 		lines_in_f2_dict[ tok[0].strip() ].append( line_to_add )
 
+	if header: # counting fields in <file2> to "fill" with "filler" when there is no match,
+		number_of_fields_in_f2 = len(tok)
+		sys.stderr.write("Reading %d fields from %s \n" % (number_of_fields_in_f2, args.file2.name ) )
+		header = False
+	elif number_of_fields_in_f2 != len(tok):
+		sys.stderr.write("Warning: a line in %s has a different number of fields:\n" % args.file2.name )
+		sys.stderr.write(line)
+		
 args.file2.close()
+
+if number_of_fields_in_f2 ==1: 
+	if exclude_if_no_match:
+		sys.stderr.write("%s has only one column and '-x' is on == extracting lines rather than merging ;)\n" % args.file2.name )
+	else:
+		sys.stderr.write("%s has only one column and '-x' is off - exiting since there is nothing to do ;)\n" % args.file2.name )
+		sys.exit(0)	
 
 
 #################################################
@@ -125,20 +134,26 @@ else:
 	number_of_fields_to_fill = number_of_fields_in_f2 - 1
 
 for line in args.file1:
-	line_merged = line.strip(); key_f1 = ""
+	line_merged = line.strip(" \n"); key_f1 = ""
 	num_line += 1
 	try:
 		if args.header and header :
-			print( line_merged + '\t' + header_f2 ) 
+			if number_of_fields_in_f2 > 1:
+				print( line_merged + '\t' + header_f2 ) 
+			else:
+				print( line_merged  )
 			header = False
 		elif number_of_fields_f1 == 0 or number_of_fields_f1 == len(line.split('\t')):
 			key_f1 = line.split('\t')[N-1].strip()
 			if key_f1 in lines_in_f2_dict:
-				if mode == 1:
-					print ( line.strip() + '\t' +  lines_in_f2_dict[key_f1][0] )
+				if number_of_fields_in_f2 == 1: # v.0.3.2
+					print ( line.strip(" \n") )
 				else:
-					for n in range(0, len( lines_in_f2_dict[key_f1] ) ):
-						print ( line.strip() + '\t' +  lines_in_f2_dict[key_f1][n] )
+					if mode == 1:
+						print ( line.strip(" \n") + '\t' +  lines_in_f2_dict[key_f1][0] )
+					else:
+						for n in range(0, len( lines_in_f2_dict[key_f1] ) ):
+							print ( line.strip(" \n") + '\t' +  lines_in_f2_dict[key_f1][n] )
 			elif not exclude_if_no_match: #v.0.3
 				for i in range(0, number_of_fields_to_fill):
 					line_merged = line_merged + '\t' + filler
